@@ -1,4 +1,4 @@
-var data = [
+plotData([
 {
 rain: 0,
 prob: 1,
@@ -64,4 +64,4 @@ rain: 0,
 prob: 1,
 time: "13:00:00"
 }
-];
+]);
