@@ -13,8 +13,8 @@ from datetime import datetime, date, timedelta
 
 class GetPrediction(RequestHandler):
     def get(self):
-        lat = self.request.get('lat')
-        lon = self.request.get('lon')
+        lat = float(self.request.get('lat'))
+        lon = float(self.request.get('lon'))
 #        lat = 51.508907
 #        lon = -0.084054
         logging.info('Forecast for (%sN,%sE)', lat, lon)
@@ -70,7 +70,7 @@ def blow_weather(cur_lat_long, wind_dir, london_station):
          weather_station=l_s
    return weather_station
 
-def rain_prediction(cur_lat, cur_lon):
+def rain_prediction(cur_lat, cur_long):
 
    date_time=date.today()
 
@@ -103,6 +103,7 @@ def rain_prediction(cur_lat, cur_lon):
    cur_closest=99999
    close_station=[]
    for l_s in london_station:
+      logging.info('Weather station (%sN,%sE) nearby', l_s['Lat'], l_s['Long'])
       s_dist=abs(cur_lat-l_s['Lat'])+abs(cur_long-l_s['Long'])
       if (s_dist < cur_closest):
          cur_closest=s_dist
