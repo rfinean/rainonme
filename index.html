@@ -9,8 +9,10 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="viewport" content="width=device-width, initial-scale=1" /> 
-  <link rel="stylesheet" type="text/css" href="style.css" />
   <style>
+    body {
+      margin:0;
+    }
     .container {
       display:table;
       position:absolute;
@@ -21,6 +23,7 @@
 </head>
 <body>
 
+<script src="prediction.js"></script>
 <div class="container">
 <!-- 
      german-clock.svg
@@ -85,18 +88,19 @@
   </defs>
   
   <!-- rain forecast sectors -->
-  <path id="t1" fill="orange" stroke="#446688" stroke-width="0" />
-  <path id="t2" fill="orange" stroke="#446688" stroke-width="0" />
-  <path id="t3" fill="orange" stroke="#446688" stroke-width="0" />
-  <path id="t4" fill="orange" stroke="#446688" stroke-width="0" />
-  <path id="t5" fill="orange" stroke="#446688" stroke-width="0" />
-  <path id="t6" fill="orange" stroke="#446688" stroke-width="0" />
-  <path id="t7" fill="orange" stroke="#446688" stroke-width="0" />
-  <path id="t8" fill="orange" stroke="#446688" stroke-width="0" />
-  <path id="t9" fill="orange" stroke="#446688" stroke-width="0" />
-  <path id="t10" fill="orange" stroke="#446688" stroke-width="0" />
-  <path id="t11" fill="orange" stroke="#446688" stroke-width="0" />
-  <path id="t12" fill="orange" stroke="#446688" stroke-width="0" />
+  <path id="t0" fill="orange" stroke="none" stroke-width="0" />
+  <path id="t1" fill="orange" stroke="none" stroke-width="0" />
+  <path id="t2" fill="orange" stroke="none" stroke-width="0" />
+  <path id="t3" fill="orange" stroke="none" stroke-width="0" />
+  <path id="t4" fill="orange" stroke="none" stroke-width="0" />
+  <path id="t5" fill="orange" stroke="none" stroke-width="0" />
+  <path id="t6" fill="orange" stroke="none" stroke-width="0" />
+  <path id="t7" fill="orange" stroke="none" stroke-width="0" />
+  <path id="t8" fill="orange" stroke="none" stroke-width="0" />
+  <path id="t9" fill="orange" stroke="none" stroke-width="0" />
+  <path id="t10" fill="orange" stroke="none" stroke-width="0" />
+  <path id="t11" fill="orange" stroke="none" stroke-width="0" />
+  <path id="t12" fill="orange" stroke="none" stroke-width="0" />
 
   <!-- dial -->
   <g clip-path="url(#dialCircle)">
@@ -162,28 +166,33 @@
       };
     }
 
-    function describeArc(x, y, radius, startAngle, endAngle){
+    function describeArc(x, y, radius, startAngle, endAngle) {
 
         var start = polarToCartesian(x, y, radius, endAngle);
         var end = polarToCartesian(x, y, radius, startAngle);
 
-        var arcSweep = endAngle - startAngle <= 30 ? "0" : "1";
+        var arcSweep = endAngle - startAngle <= 30 ? '0' : '1';
 
         var d = [
-            "M", start.x, start.y, 
-            "A", radius, radius, 0, arcSweep, 0, end.x, end.y,
-            "L", x,y,
-            "L", start.x, start.y
-        ].join(" ");
+            'M', start.x, start.y, 
+            'A', radius, radius, 0, arcSweep, 0, end.x, end.y,
+            'L', x,y,
+            'L', start.x, start.y
+        ].join(' ');
 
         return d;       
     }
 
-    document.getElementById("t1").setAttribute("d", describeArc(100, 100, 100, 0, 5));
-    document.getElementById("t2").setAttribute("d", describeArc(100, 100, 100, 5, 10));
+    var i = data.length;
+    while (i--) {
+      var startMins = new Date('May 1, 2000 ' + data[i].time).getMinutes(),
+          mmRain = 0.0 + data[i].rain * data[i].prob,
+          sector = document.getElementById('t' + i);
 
+      sector.setAttribute('d', describeArc(100, 100, 100, startMins, startMins + 5));
+      if (mmRain > 0.0) sector.setAttribute('fill', 'hsl(240,100%,' + (80.0 - mmRain * 2.5) + '%');
+    }
     </script>
-
 
 </body>
 </html>
