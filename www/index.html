@@ -1,14 +1,14 @@
 <!DOCTYPE HTML>
-<html lang="en" manifest="xmanifest.appcache">
+<html lang="en" manifest="manifest.appcache">
 <head prefix="og: http://ogp.me/ns#">
   <meta charset="UTF-8" />
   <title>Rain on Me</title>
   <meta name="description" content="When is it going to start/stop raining in the next hour?" />
-  <meta name="keywords" content="free weather rain hour" />
-  <link rel="canonical" href="http://rfinean.github.io/rainonme/" />
+  <meta name="keywords" content="high resolution weather rain forecast next hour" />
+  <link rel="canonical" href="http://rain-on-me.appspot.com/" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" /> 
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" /> 
   <style>
     body {
       margin:0;
@@ -195,14 +195,31 @@
       }
     }
 
-    navigator.geolocation.getCurrentPosition(function(position) {      
+    var options = {
+      enableHighAccuracy: true,
+      timeout: 5000,
+      maximumAge: 0
+    };
+
+    function fetchData(position) {      
       var script = document.createElement('script');
       script.src = 'prediction.js'
         + '?lat=' + position.coords.latitude
         + '&lon=' + position.coords.longitude
         + '&callback=plotData';
       document.getElementsByTagName('head')[0].appendChild(script);
-    });
+    }
+
+    navigator.geolocation.getCurrentPosition(fetchData, function(err) {      
+      var demoloc = {
+        coords:
+        {
+          latitude: 51.508907,
+          longitude: -0.084054
+        }
+      };
+      fetchData(demoloc);
+    }, options);
   </script>
 </body>
 </html>
