@@ -9,7 +9,7 @@ from google.appengine.ext.webapp import RequestHandler
 import json
 from json import loads
 from urllib2 import urlopen
-from datetime import datetime, date, timedelta
+from datetime import date
 
 class GetPrediction(RequestHandler):
     def get(self):
